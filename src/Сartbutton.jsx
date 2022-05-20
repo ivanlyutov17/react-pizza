@@ -5,7 +5,7 @@ export const Cartbutton=()=>{
   const openCart=()=>{
     dispatch({type:'CHANGE_CART'})
   }
-//asd
+
   const dispatch = useDispatch();
   const pizzaCount = useSelector(state=>state.pizzas)
   const price = useSelector(state=>state.price)

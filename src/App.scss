@@ -2,3 +2,33 @@
     display: flex;
     justify-content: space-between;
 }
+.order-container{
+    max-width: 80%;
+    margin: 0 auto;
+    text-align: center;
+}
+.order-container h1{
+    margin-bottom: 50px;
+}
+.delivery-window{
+    max-width: 80%;
+    border: 1px solid black;
+    padding: 5px;
+    margin: 0 auto;
+}.delivery-window input{
+    margin-top: 25px;
+    width: 40%;
+    margin: 0 auto;
+}
+.delivery-label{
+    margin-right: 10px;
+}
+.adresses li{
+margin-bottom: 25px;
+}
+.adresses li:first-child{
+    margin-top: 25px;
+    }
+    .adresses li span{
+        color:rgb(7, 30, 22)
+    }

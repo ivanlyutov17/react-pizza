@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux"
 import { useDispatch } from "react-redux"
+import { Link } from "react-router-dom";
 
 export const Cartfull = ()=>{
     let isVisible = '';
@@ -7,51 +8,12 @@ export const Cartfull = ()=>{
     const price = useSelector(state=>state.price);
     const show = useSelector(state=>state.openCart);
     const dispatch = useDispatch();
-    let pizzaNames = [];
-    let pizzaQuantity = [];
-  
 
-    let arr = [];
-  var test = useSelector(state=>state.pizzas);
-    test.forEach(el => {
-      arr.push(el.name);
-    });
-
-  var resultReduce = arr.reduce(function(acc, cur) {
-    if (!acc.hash[cur]) {
-      acc.hash[cur] = { [cur]: 1 };
-      acc.map.set(acc.hash[cur], 1);
-      acc.result.push(acc.hash[cur]);
-    } else {
-      acc.hash[cur][cur] += 1;
-      acc.map.set(acc.hash[cur], acc.hash[cur][cur]);
-    }
-    return acc;
-  }, {
-    hash: {},
-    map: new Map(),
-    result: []
-  });
-  
-  var result = resultReduce.result.sort(function(a, b) {
-    return resultReduce.map.get(b) - resultReduce.map.get(a);
-  });
-  
-for (let i = 0;i<result.length;i++){
-  pizzaNames.push(Object.keys(result[i])[0])
-  pizzaQuantity.push(Object.values(result[i])[0]);
-
-}
-
-
-
-    
+ 
     if(show === false){
         isVisible = 'none'
       }else
       isVisible = 'block'
-
-
 
 
     const openCart=()=>{
@@ -70,23 +32,22 @@ for (let i = 0;i<result.length;i++){
     return(<div className='cart' style={{display:isVisible}}>
     <h2>Ваш заказ : </h2>
     <div className="cart-pizzas">
-      <div>
+      <div style={{width:'100%'}}>
             {
-                pizzaNames.map((pizza)=>{
+                pizzas.map((pizza)=>{
                     return(
-                    <p style={{fontSize:'32px'}}>{pizza}</p>)
+                    <div style={{textAlign:'left',display:'flex',justifyContent:'space-between'}}>
+                    <p style={{fontSize:'32px'}}>{pizza.name}  {pizza.size}</p>
+                    <p style={{fontSize:'32px'}}>{pizza.price}</p>
+                    </div>
+
+                    )
+
                 })
    
             }
             </div>
-            <div style={{textAlign:'right'}}>
-            {
-              pizzaQuantity.map((quantity)=>{
-                return(
-                <p style={{fontSize:'32px'}}>x{quantity}</p>)
-            })
-            }
-            </div>
+
 </div>
             <h3>Cтоимость заказа :{price}</h3>
     <button onClick={()=>openCart()} class="button button--black">
@@ -95,5 +56,10 @@ for (let i = 0;i<result.length;i++){
     <button class="button button--black ml">
       <span onClick={()=>clearCart()}>Очистить корзину</span>
     </button>
+    <button class="button button--black ml">
+    <Link to="/order">      <span onClick={()=>console.log(pizzas)}>Cоздать заказ</span>
+</Link>
+    </button>
+    
   </div>)
 }

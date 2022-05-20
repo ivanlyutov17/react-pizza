@@ -1,12 +1,24 @@
 import  {pizzaList}  from "./pizzasList"
 import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
 export const PizzaList=({active})=>{
   const currentSort = useSelector(state=>state.sort)
   const dispatch = useDispatch();
   const addPizza = (pizza)=>{
-  dispatch({type:'ADD_PIZZA',payload:pizza});
+    if (pizzaSizeName !== pizza.name){
+      alert('Вы не выбрали размер')
+    }
+    else{
+      pizza.size = pizzaSize;
+  dispatch({type:'ADD_PIZZA',payload:pizza});}
 }
 
+const [pizzaSize,setPizzaSize] = useState('');
+const [pizzaSizeName,setPizzaSizeName] = useState('');
+const setSize = (size,pizzaName)=>{
+    setPizzaSize(size);
+    setPizzaSizeName(pizzaName);
+}
   let pizzasToShow = pizzaList;
 
  if (active!=='all'){
@@ -15,7 +27,6 @@ export const PizzaList=({active})=>{
 
  if (currentSort === 'цене'){
   pizzasToShow.sort((a,b)=>{
-    console.log(currentSort);
     return a.price-b.price
    })
   };
@@ -39,7 +50,16 @@ export const PizzaList=({active})=>{
   <div className="pizza-block">
   <img className="pizza-block__image" src={pizza.img} alt="Pizza"/>
   <h4 className="pizza-block__title">{pizza.name}</h4>
-  
+  <div>
+    <p>Выберите размер:</p>
+    <div className="categories">
+              <ul>
+                <li onClick={()=>setSize('S',pizza.name)} className={pizzaSize==='S'&&pizzaSizeName === pizza.name?'active':''}>S - 26 cm</li>
+                <li onClick={()=>setSize('L',pizza.name)} className={pizzaSize==='L'&&pizzaSizeName === pizza.name?'active':''}>L - 32 cm</li>
+                <li onClick={()=>setSize('XL',pizza.name)} className={pizzaSize==='XL'&&pizzaSizeName === pizza.name?'active':''}>XL - 40 cm</li>
+              </ul>
+            </div>
+  </div>
   <div className="pizza-block__bottom">
     <div className="pizza-block__price">{pizza.price}₽</div>
     <div className="button button--outline button--add">
