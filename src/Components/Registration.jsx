@@ -2,35 +2,70 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 export const Registration = ()=>{
-
+    
     const dispatch = useDispatch();
-    let formData = [];
+    let formData = [
+        ['adress','',],
+        ['room','',],
+        ['name','',],
+       ['email','',],
+        ['phone','',],
+        ['password','',],
+    ];
+    let registrationData;
+    let allow = false;
     let navigate = useNavigate();
     let data = useSelector(state=>state.registrationData);
-    console.log(data);
+
 
 const handleRegData = ()=>{
     let regData = document.forms.regData;
-
-    for(let i = 0;i<regData.length;i++){
-        if(regData[i].value!=='')
-        formData[i]=regData[i].value;
-        else{
-        alert('Вы заполнили не все поля')
-    break;}
+    for(let i =0;i<regData.length;i++){
+        if(regData[i]!==''){
+        formData[i][1] = regData[i].value;}
     }
-    if(formData.length===regData.length)
-    changeStoreData();
+    for(let i = 0;i<formData.length;i++){
+        if(formData[i][1] === ''){
+            allow = false;
+            alert('Не все поля');
+            break;
+        }
+    
+        allow = true;
+    }
+
+   registrationData = Object.fromEntries(formData)
+        changeStoreData(registrationData);
 
 
 }
 
-const changeStoreData=()=>{
-    dispatch({type:'SAVE_REGDATA',payload:formData});
-    alert('Вы успешно зарегистрировались!');
-    navigate('/');
+const changeStoreData=(registrationData)=>{
+
+if(allow === true){
+
+        fetch('https://628f710bdc47852365408a94.mockapi.io/users',{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify(registrationData),
+        })
+        .then(function(response) {
+            if(response.status === 201){
+           dispatch({type:'SAVE_REGDATA',payload:registrationData});
+           alert('Вы успешно зарегистрировались!');
+           navigate('/');
+        }
+           else  {console.log('Error:', response.status);
+           alert('Произошла ошибка,попробуйте позже.');
+    }
+        })
+    }
+
+   
+
 
 }
+
 
     
     return(

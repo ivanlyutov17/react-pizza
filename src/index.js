@@ -13,10 +13,20 @@ const defaultState={
     price:0,
     openCart:false,
     sort:'популярности',
-    registrationData:[],
+    registrationData:{},
 }
 
+export var pizzaList = [];
+let API = "https://628f710bdc47852365408a94.mockapi.io/pizzas";
 
+let test = fetch(API)
+.then(response => response.json())
+.then(data => setData(data));
+
+
+const setData=(data)=>{
+pizzaList = data;
+}
 
 const reducer = (state = defaultState,action)=>{
       switch(action.type){
